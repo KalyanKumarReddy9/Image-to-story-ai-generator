@@ -1,0 +1,7 @@
+streamlit==1.10.0
+transformers==4.15.0
+torch==1.13.0
+Pillow==8.4.0
+deep-translator==1.7.0
+gtts==2.2.3
+numpy==1.23.5
