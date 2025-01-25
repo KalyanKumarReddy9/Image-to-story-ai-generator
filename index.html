@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image to Story Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="heading">Image to Story Generator</h1>
+        
+        <!-- Image Upload and Language Selection Form -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="image" class="label">Upload an Image:</label>
+                <input type="file" name="image" id="image" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="language" class="label">Select Language:</label>
+                <select name="language" id="language" class="select">
+                    <option value="en">English</option>
+                    <option value="de">German</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="it">Italian</option>
+                    <!-- Add more languages as needed -->
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn">Generate Story</button>
+        </form>
+
+        <div id="output" class="output">
+            <h2>Generated Caption:</h2>
+            <p id="caption"></p>
+            
+            <h2>Generated Story:</h2>
+            <p id="story"></p>
+
+            <div id="audioContainer" style="display: none;">
+                <button onclick="playAudio()" class="audio-btn">Play Story</button>
+                <audio id="audioPlayer" controls style="display:none;"></audio>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission and interact with Flask backend
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const language = document.getElementById('language').value;
+            formData.append('language', language);
+
+            fetch('/generate', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('caption').innerText = data.caption;
+                document.getElementById('story').innerText = data.story;
+                document.getElementById('audioPlayer').src = data.audio_url;
+                document.getElementById('audioContainer').style.display = 'block';
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Play audio when button is clicked
+        function playAudio() {
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.play();
+        }
+    </script>
+</body>
+</html>
