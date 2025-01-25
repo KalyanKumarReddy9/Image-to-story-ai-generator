@@ -28,3 +28,19 @@ Before running the application, make sure to install the required dependencies b
 
 ```bash
 pip install -r requirements.txt
+
+
+Directory Structure
+
+story-generator/
+│
+│
+├── static/                    # Directory for static files like CSS
+│   └── style.css              # The CSS file for styling the app
+│
+├── templates/                 # Directory for HTML templates
+│   └── index.html             # The main HTML file for the UI
+│
+└── app.py                     # The Streamlit app entry point
+
+
